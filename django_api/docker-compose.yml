@@ -1,0 +1,29 @@
+version: '3'
+services:
+  movies:
+    build: movies_admin
+    command: bash -c "python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./movies_admin:/opt/app
+    depends_on:
+      - pg_database
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    
+
+  pg_database:
+    container_name: yandex_postgresql
+    image: postgres
+    restart: always
+    volumes:
+      - .docker/pgdata:/var/lib/postgresql/data/pgdata
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
+    expose:
+      - "5432"
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
