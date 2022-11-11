@@ -21,6 +21,20 @@ class MoviesApiMixin:
         return JsonResponse(context)
 
     def serialize(self, obj: Filmwork) -> dict:
+        '''
+        Returns the dict from Filmwork.
+
+        Parameters:
+            obj(Filmwork): object Filmwork to serialize
+
+        Returns:
+            data(dict): Serialized object Filmwork
+
+        Необходим, т.к. сериализатор Django не умеет обрабатывать m2m связи
+           в моделях, возвращая либо ошибку сериализации
+           в случае с BaseDetailView, либо id связанной таблицы
+           в случае с BaseListView
+        '''
         data = model_to_dict(obj, fields=self.attributes)
 
         data.update({
